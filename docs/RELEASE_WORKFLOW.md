@@ -5,11 +5,12 @@ _Last updated: 2026-11-09_
 ## Repository
 
 - Source repository: https://github.com/DorManDel/Dor-s-Profile-Site
-- `main`: approved, production-intended website. Do not push unreviewed portfolio snapshots here.
+- `old-version`: permanent snapshot of the original March 2026 profile site, created directly from the former `main` commit `e74bf69593b2e92a91ccbb3600744ff04dbb967b`. Do not modify this branch.
+- `main`: public release branch. Currently still serves the old site until the upgraded portfolio is approved and merged. After that, it will serve the upgraded site. Do not push unreviewed builds here.
 - `develop`: integration branch for the next candidate release.
 - `feature/<short-description>` (optional): isolated changes before merging into `develop`.
 
-The old profile site remains on `main` until the replacement portfolio is explicitly approved.
+The original site's source is already preserved on `old-version` independently of future `main` changes. The old profile site also remains on `main` until the replacement portfolio is explicitly approved.
 `VisualArchive` is a separate repository; we should identify which components need to be
 shared or reused without silently overwriting that project's source.
 
