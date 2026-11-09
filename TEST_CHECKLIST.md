@@ -36,3 +36,9 @@ This file separates **automated results** from **owner/device acceptance**. A ch
 - [ ] Review `develop` → `main` PR and all changed files.
 - [ ] Merge only after owner acceptance.
 - [ ] Verify public URL shows the approved commit; run smoke tests on the hosted page.
+
+## Expanded automated smoke — final candidate
+
+`qa_accept.py` (headless desktop Chromium): **19/19 passing** across 1440, 768 and 390 pixel widths. Covered actual DLS preview `cover`, click to open shared viewer, next via keyboard, Escape close, editor gear/click-away/max scale, same SVG in all three locations, WSLX conversion in both directions and existence of example buttons, no JS errors or body overflow.
+
+Note: some UI elements are intentionally cloned into animation ghost layers; tests must target the active story window's `#storyImageView`, not duplicate decorative snapshots.
