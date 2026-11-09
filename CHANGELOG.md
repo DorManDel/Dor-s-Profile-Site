@@ -43,3 +43,8 @@
 - Exact owner-created ASCuarium icon validation (current code references the `ASCuarium/images/favicon.ico` in the repo, but screenshot feedback indicates mismatch).
 - Deployed DVD bridge color sync and frame-rate behavior.
 - Long-term extraction of large media/data-URI payloads and CSS modules.
+
+### Final QA correction (same candidate)
+- Fixed a higher-priority DLS/project-skin CSS rule that initially overrode `object-fit:cover` in the shared preview.
+- Removed a stale `closeFullShot()` call left behind by the deleted per-project fullscreen controller. The first WSLX close regression test exposed it.
+- Re-ran desktop, tablet, and phone-width browser checks: **19/19 passing** (see `QA_REPORT.md`).
