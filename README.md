@@ -1,215 +1,81 @@
-# ⌬ Dor Mandel | Profile ⏣
+# MyPortfolio
 
-A personal profile page built with **HTML, CSS, and JavaScript**.
+A standalone, responsive developer portfolio built with **HTML, CSS and vanilla JavaScript**. It includes a project cover-flow, project-specific story windows, the Visual Archive, accessibility controls, and interactive project demonstrations.
 
-The goal is to create a profile page that introduces who I am, what I do, and how to contact me, while also showing a tryout in HTML architecture language with visual style based on **glass panels**, a personal wallpaper background, and interactive UI elements.
+This repository is an evolving learning project. The implementation intentionally uses web platform APIs rather than a framework or a build system. It is currently packaged as a **single HTML file for zero-dependency previewing**; asset and module extraction is tracked under technical debt.
 
----
+## Running the site
 
-## ✨ Main Idea
+1. Open `index.html` in a modern browser for a quick offline review. Some external images and `iframe` demos require Internet access. `file://` also limits cross-origin integration.
+2. To test more realistically, start a local HTTP server in the repository root (for example, `python -m http.server 8000`) and open `http://localhost:8000`.
+3. After approval, merge the tested source into `main`. GitHub Pages should publish from the selected production branch; see `docs/RELEASE_WORKFLOW.md`.
 
-This page is a personal landing page / profile page.
+No dependencies, API keys or npm install steps are required. Do not treat a local preview as proof that a remote iframe bridge works on the public domain.
 
-It presents:
-- my name and role
-- a short personal bio
-- quick actions like GitHub, CV, and contact
-- a contact popup with multiple ways to reach me
-- a live date/time display
-- a settings panel ( that save the preferences )
-- a location preview popup (using in-frame Google maps)
+## How it works
 
----
-## Current Structure Note
+- **Page shell**: masthead, hero, navigation curtain, site preferences, contact, and scroll progress.
+- **Selected Work**: a custom element with its own Shadow DOM. Its cover-flow uses pointer events and `requestAnimationFrame` with velocity, damping and snapping. Clicking an album opens a project story.
+- **Visual Archive**: another custom element with a pan/zoom canvas-like artwork grid and fullscreen artwork viewer.
+- **Shared viewer**: both components now instantiate the **same `initViewer` controller**, sharing media navigation, inertia/snap, keyboard, responsive overlay, closing, native-size toggle and focus return. Different catalogs and captions are passed to the controller.
+- **Popup manager**: common outside-click / Escape controller, which works through normal DOM and Shadow DOM via `event.composedPath()`.
+- **Project presets**: saved locally by project ID. Preview scale is 50–400%, with focus X/Y. Changes saved to localStorage affect that browser, *not all site visitors*.
+- **WSLX Interactive simulation**: browser-only path converter. It converts `C:\...` ↔ `/mnt/c/...`, supports examples and copies the result. It does not execute a shell, access WSL or modify files.
+- **DVD embed**: the original website is displayed in an iframe; its game physics are unchanged. The page may sync border/title via a same-origin observer or an origin-checked `postMessage` bridge when the remote bridge is deployed. Cross-origin live-color synchronization is not yet verified.
 
-This project currently uses a single `index.html` file that contains:
+## Key JavaScript functions (plain-English explanation)
 
-- HTML
-- CSS
-- JavaScript
+| Function/API | Role | Example |
+|---|---|---|
+| `initViewer(doc, items, labelType)` | Builds the shared gallery behavior | `const viewer = initViewer(doc, works, type => type)` |
+| `viewer.open(index, sourceElement)` | Opens an Archive image at an index | `window.VisualViewer.open(2, clickedImage)` |
+| `viewer.openCollection(items, index, element)` | Opens a *project* media set with the same viewer engine | `window.PortfolioProjectViewer.openCollection([{original: imageUrl, title: 'Screenshot', type: 'Project'}], 0, clickedImage)` |
+| `viewer.close()` | Dismisses and restores focus | `window.PortfolioProjectViewer.close()` |
+| `window.CoverFlowEngine.restoreSession(state)` | Restores the selected cover-flow mode and project | `window.CoverFlowEngine.restoreSession({mode:'simple',projectId:'dls'})` |
+| `window.PortfolioPopupManager.register(...)` | Registers a single click-away/Escape policy | See example below |
+| `window.PortfolioProjectPrefs.get('dls')` | Reads per-project local presentation preferences | `console.log(window.PortfolioProjectPrefs.get('dls'))` |
 
-all together in one place.
+### Shared popup example
 
-### Why this approach was chosen
-At this stage, keeping everything in one file makes learning, testing, and iterating faster.
+```js
+const unregister = window.PortfolioPopupManager.register({
+  panel,
+  trigger: openButton,
+  isOpen: () => !panel.hidden,
+  close: () => { panel.hidden = true; }
+});
+// Call unregister() if the component is destroyed.
+```
 
-### Tradeoff
-This is easier for early development, but less modular for long-term growth.
+### Media catalog example
 
-### Future direction
-Later, the project may be split into:
-- `index.html`
-- `style.css`
-- `script.js`
+```js
+const images = [
+  { original: 'images/screenshot-1.webp', title: 'Sign in', type: 'DLS' },
+  { original: 'images/screenshot-2.webp', title: 'Dashboard', type: 'DLS' }
+];
+window.PortfolioProjectViewer.openCollection(images, 0, clickedPreview);
+```
 
-for better structure and maintainability.
+Large project screenshots use `object-fit: cover` in the small card preview to fill available space, with editable focus coordinates. The fullscreen viewer uses `contain` to display the entire image without distortion; **Actual size** shows its source pixel dimensions when possible.
 
-##  JavaScript Behaviors
+## Accessibility and UI
 
-### What they do
-JavaScript is used here for:
-- opening / closing the contact popup
-- opening / closing the settings panel
-- opening / closing the location modal
-- copying the Discord username
-- updating the date and time every second
-- updating the glass opacity from the slider
+- One SVG gear path is reused for the site and project settings; the Archive retains the same graphic.
+- Custom scrollbars use shared tokens across the main document and Shadow DOM components, with native touch scrolling preserved where possible.
+- Hover animation is optional and reduced motion is respected.
+- Gallery arrows and Escape work on keyboards; pointer drag works on mouse and touch.
 
-### Why it was chosen
-These behaviors make the page feel interactive and alive, while still staying lightweight.
+## Documentation
 
----
+- [`ARCHITECTURE.md`](ARCHITECTURE.md): modules, state and data flow, boundaries, iframe bridge.
+- [`CHANGELOG.md`](CHANGELOG.md): what was changed, why and which tests were run.
+- [`TECHNICAL_DEBT.md`](TECHNICAL_DEBT.md): known duplication, risk and next refactors.
+- [`TEST_CHECKLIST.md`](TEST_CHECKLIST.md): desktop/phone acceptance checks.
+- [`docs/RELEASE_WORKFLOW.md`](docs/RELEASE_WORKFLOW.md): develop / main / old-version branching and Pages policy.
 
-# 🎨 Color Palette
+## Branches
 
-The page uses a cool dark palette with glass-style transparency.
-
-## Main colors used
-
-### Text
-- `#f4f7ff` → main bright text
-- `#c8d3ea` → softer secondary text
-
-### Accent
-- `#79b8ff` → blue accent for highlights and identity
-
-### Status
-- `#7cffb2` → green indicator for the status chip
-
-### Background overlay
-- `rgba(6, 10, 20, 0.52)` → dark overlay above the wallpaper
-
-### Glass panels
-- `rgba(255, 255, 255, 0.08)` → light transparency layer
-- `rgba(255, 255, 255, 0.14)` → stronger glass layer
-
-### Popup / modal panels
-- `rgba(14, 22, 38, 0.92)` → dark popup background
-
-## Why this palette was chosen
-This palette gives the page:
-- readability
-- a tech / modern feeling
-- strong contrast
-- a premium dark aesthetic
-
-The blue tones match the overall visual direction and also fit the profile image and wallpaper style.
-
----
-
-# 🧩 Simple Term Explanations
-
-## HTML
-HTML is the structure of the page.  
-It tells the browser what exists on the page.
-
-Examples:
-- titles
-- paragraphs
-- buttons
-- images
-- sections
-
-## CSS
-CSS controls how the page looks.
-
-Examples:
-- colors
-- spacing
-- borders
-- layout
-- transparency
-- hover effects
-
-## JavaScript
-JavaScript adds behavior.
-
-Examples:
-- opening popups
-- updating time
-- copying text
-- reacting to button clicks
-
-## Modal
-A modal is a popup window shown above the page content.
-
-## Tooltip / Popup
-A small floating box that appears for actions or extra information.
-
-## Glass Effect
-A design style that uses:
-- transparency
-- blur
-- soft borders
-- layered light
-
-to create a frosted-glass look.
-
-## Responsive Design
-A page that adjusts better to different screen sizes like desktop and mobile.
-
----
-
-# 🧠 Why the Page Was Built This Way
-
-This page was designed with a few goals in mind:
-
-- keep the first screen clear and strong
-- show useful information quickly
-- keep the design personal, not generic
-- make interaction compact instead of noisy
-- add features gradually in a modular way
-
-The page is intentionally split into modules so it is easier to:
-- understand
-- explain
-- improve later
-- maintain over time
-
----
-
-# 🚀 Current Features
-
-- personal wallpaper background
-- profile image
-- name + role
-- bio section
-- live date and time
-- GitHub button
-- CV button
-- interactive contact popup
-- Gmail / mail app email options
-- phone / WhatsApp actions
-- Discord username copy
-- location modal with Google Maps
-- settings panel
-- live glass opacity control
-
----
-
-# 🔮 Future Ideas
-
-Planned ideas for later versions may include:
-- dark / light mode toggle
-- improved icons
-- shine hover animation
-- project cards
-- music / Spotify section
-- easter eggs
-- accessibility controls
-- animations on scroll
-- custom logo / SVG signature
-
----
-
-# 📁 Project Structure
-
-```text
-project-folder/
-│
-├── index.html
-│
-├── images/
-│   ├── wpbg.png
-│   ├── profile_pic.jpg
-│   └── cv.pdf
+- `old-version`: permanent snapshot of the original March 2026 profile.
+- `develop`: working version and tests, **not automatically the public site**.
+- `main`: approved production website, published only after the owner signs off.
