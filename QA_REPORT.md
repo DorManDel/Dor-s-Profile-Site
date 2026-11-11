@@ -21,3 +21,12 @@
 - MyPortfolio static smoke workflow: **success** for the asset/test commit: https://github.com/DorManDel/Dor-s-Profile-Site/actions/runs/43109660803 .
 - GitHub Pages build/deployment workflow: **success** for the WP2 HTML commit on `develop`: https://github.com/DorManDel/Dor-s-Profile-Site/actions/runs/43109657133 .
 - This confirms a GitHub-reported deployment, **not** an independently loaded public browser page or physical-device QA.
+
+
+## R1.6 WP3 implementation notes (2026-11-12)
+- Source files committed on `develop`: `js/water-ripple-v2.js` (owner-tested engine copied from Library), `js/wp3-enhancements.js`, `css/wp3-fx.css`, `audio/spin-09-click.mp3`, `index.html`, and expanded smoke tests.
+- Original Spin-09 source recovered from user Library (35,987 bytes; 2.22-second MP3). Optimized website cue derived from a short section, verified byte-identical to uploaded Git blob by SHA `e15e46e85e1d135d9364d46e1be347194ce58d88`; website copy 1,401 bytes. Full original is NOT a repo asset.
+- Spin-09 excerpt, velocity response, click count, volume/presets, and public `audio/spin-09-click.mp3` path wired into carousel runtime. Existing off-by-default and preview gating retained.
+- Static CI extended with new asset, module parsing, UI anchors and contact URL checks; GitHub Actions **success** for test commit `76c3ba7` at run https://github.com/DorManDel/Dor-s-Profile-Site/actions/runs/43115977320 and Pages workflow reported **success** at run https://github.com/DorManDel/Dor-s-Profile-Site/actions/runs/43115976114.
+- Later WP3 export and docs commits require their own workflow results. These checks DO NOT establish behavioral tests of live mobile Safari, Samsung haptics/audio, ripple WebGL, prism sensor permissions or layout overlay bounds.
+- Default-off behavior of Ripple/Prism/Haptics/FPS is a static code/defaults check; owner preview/acceptance is still required.

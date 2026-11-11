@@ -1,4 +1,4 @@
-# MyPortfolio — R1.6 Work Package 2 (develop)
+# MyPortfolio — R1.6 Work Package 3 preview (develop)
 
 **Base**: the owner-uploaded `MyPortfolio-R1.5(1).html` (SHA-256 `197ddbde9f67a4636436b937cc97baf09dd330b22860b6a5fb6d95c0a0194f22`), NOT the separate carousel sound demo. The original was not overwritten.
 
@@ -37,6 +37,21 @@
 - Adds **Developer Settings → Things I've Built · Sound & FX** with off-by-default WebAudio selection clicks, volume, velocity response, style presets, preview, and an optional imported short clip (session only).
 - Adds **Tools → Publish from Phone**: Copy GitHub config + Open GitHub editor. `published-config.js` is the small publishable override, loaded synchronously before site initialization. GitHub's normal authentication authorizes the commit; no tokens are stored in the site. See `docs/MOBILE_PUBLISH.md`.
 - Keeps the same Windows `Publish to develop.cmd` and protects any existing `published-config.js` edited on GitHub unless a new explicit draft is exported.
+
+## New in R1.6 WP3 — experimental controls (2026-11-12)
+
+**Access:** open Accessibility, tap the icon five times quickly to unlock Developer Settings. The public menu remains Accessibility-only. Developer Settings now have searchable, ordered groups.
+
+- **Things I've Built → Sound & FX:** the default sound toggle remains OFF. A short optimized excerpt derived from the owner's Spin-09 MP3 is bundled as `audio/spin-09-click.mp3`, with 1–3 clicks per album, volume (default 40%), velocity response, and audio preview. The full original and Space Cadet reference are not published by default. Uploaded clips remain session-only.
+- **Interaction FX → Water Ripple V2:** OFF by default; actual WaterRipple V2 engine sits behind the hero card and over the fish, with optional independent haptics and synthesized plop (both OFF). Works with native page scroll.
+- **Interaction FX → Prism Tilt:** OFF by default. Lightweight photo overlay prototype using preferred Main Profile settings. Pointer movement works for desktop preview; Device Orientation requires explicit enable/permission on supported mobile browsers. Not a replacement for the high-fidelity standalone Prism Lab.
+- **Interaction FX → Haptic Engine:** optional light pulses when using Things I've Built, with 4–35 ms duration and a test button; cannot set motor amplitude from the browser.
+- **Tools → Performance HUD:** opt-in FPS/rAF debug overlay with mean and p95 frametime; stops when page is backgrounded.
+- **Accessibility → Reading magnifier:** desktop pointer lens continues; mobile touch/drag now shows a separate enlarged text panel above the touch point. Native pinch zoom works independently.
+- **Contact:** provided Steam and Discord links are now active, with GitHub/email unchanged.
+- **Publish from Phone:** copy the exported config to `published-config.js` using GitHub authentication. WP3 settings can be published as `fx.wp3`, but remain local preferences by default.
+
+**Testing:** CI checks syntax and asset linkage. Real Samsung Chrome/Samsung Internet, iPad Safari, audio perception, permission behavior and FPS comparisons require manual acceptance. This is a `develop` preview, not a reviewed stable `main` release.
 
 ## Pending verification and future R1.6 work
 

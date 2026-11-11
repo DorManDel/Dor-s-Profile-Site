@@ -17,3 +17,14 @@
 - [ ] Sound uploads are session-only. Publish as real versioned assets in a dedicated manifest, with decoded clip caching, compression and save/restore.
 - [ ] Native cursor editing and complex waveform/FX settings remain Phase 1 work. Avoid per-frame pointer effects unless strictly necessary.
 - [ ] `published-config.js` is an authenticated GitHub edit path, not a one-tap in-site commit. A real authenticated publishing service and full mobile media upload are Phase 2 work.
+
+## R1.6 WP3 follow-ups
+- [ ] Confirm actual WaterRipple V2 layer order, hit testing and no scrolling interference on Samsung phone + tablet.
+- [ ] Prism integration is a lightweight CSS overlay, not the full multi-surface PrismMechanic_Web engine. Validate calibration, visual fidelity and DeviceOrientation permissions across supported browsers.
+- [ ] Vibration API exposes pulse timing, not motor intensity. Test gesture requirements and throttle behavior on Galaxy/Samsung Internet and iOS unsupported fallback. Consider accessibility opt-out.
+- [ ] Touch magnifier needs text-selection, screen reader and double-tap gesture regression; native pinch zoom remains preferable for full-page magnification.
+- [ ] Bundled Spin-09 is only a 0.18-second *excerpt*. Restore/link the original 2.2-second file through approved media workflow if needed; check licensing before publishing any Space Cadet commercial samples.
+- [ ] Expand sound controls with per-clip timing/attack, cue selection and durable upload; listen at 1/2/3 clicks on actual phone speakers.
+- [ ] FPS is an rAF sampler, not precise compositor GPU instrumentation; add dropped-frame profiling, PerformanceObserver long tasks and per-effect cost before declaring speed improvements.
+- [ ] WP3 settings preference and published-config export are separate from the older snapshot undo stack. Integrate unified history and schema/version migration.
+- [ ] Live cross-device acceptance and keyboard navigation must pass before merging to `main`.

@@ -1,3 +1,14 @@
+## R1.6 WP3 — search, optional visuals, mobile accessibility and real social links (2026-11-12)
+- Resorted developer controls into coherent sections, added text search across setting names and descriptions, without hiding public Accessibility.
+- Added user-provided WaterRipple V2 (optional, initially OFF) above HTML fish and behind the hero card. Calm Mode/reduced motion turns it off. Optional throttled ripple haptic and synthesized water plop are OFF.
+- Added experimental Prism overlay preview (initially OFF), Main Profile 74/68/16°/13px/4/35 prefilled and optional DeviceOrientation with permission handling. This is a lightweight integration preview, not yet full Prism Lab visual parity.
+- Added optional developer FPS/frame-time HUD with mean and p95 intervals; pauses when hidden.
+- Added throttled optional work/navigation haptic engine (duration not hardware amplitude) and touch reading magnifier; native pinch zoom remains.
+- Activated user-provided Steam and Discord links while keeping sourced contact SVGs.
+- Recovered Spin-09 from owner's media Library and committed a short 0.18-second optimized excerpt as `audio/spin-09-click.mp3`; 1–3 adjustable clicks/album with velocity-sensitive playback. Original full 2.2-second source and copyrighted Space Cadet reference are NOT bundled as website defaults.
+- Published FX configuration can be copied to `published-config.js` through authenticated GitHub editor; users' local overrides remain separate.
+- Production `main` and `old-version` unchanged. Requires real mobile/browser behavior and audio listening QA before stable release.
+
 # MyPortfolio — Changelog
 
 ## R1.6 WP2 — cover polish, adaptive confetti, developer Sound & FX and mobile config (2026-11-10)
