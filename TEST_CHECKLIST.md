@@ -1,44 +1,40 @@
-# Round 1.5 — verification checklist
+# R1.6 WP1 test checklist
 
-This file separates **automated results** from **owner/device acceptance**. A checked Chromium test is not proof of Samsung Internet behavior.
+## Actually executed
 
-## Automated (2026-11-09)
+- [x] Source file preservation: original uploaded R1.5 HTML has unchanged SHA-256.
+- [x] Owner's `.ico` file inspected and included in `images/ASCuarium.ico`.
+- [x] Six inline JS scripts extracted; all pass Node.js `--check`.
+- [x] Static HTML assertions for Accessibility public-only, portrait inputs, media manager elements, source icon and draft export contract.
+- [ ] Chromium browser automation: unavailable/blocked by hosting security policy, **not passed**.
 
-- [x] JavaScript `node --check`: 4/4 embedded scripts.
-- [x] Chromium 1440×900: both custom elements mount, no page errors or horizontal overflow.
-- [x] Chromium 390×844: same mount, no page errors or horizontal overflow.
-- [x] Shared project viewer opens a two-image collection, Next advances, size toggle changes label, Close dismisses.
-- [x] Existing Visual Archive artwork viewer opens a real artwork, advances and closes.
-- [x] Real DLS project opens, shows `Tap to enlarge`, fullscreen view opens DLS sign-in with caption and 01/07 count.
-- [x] Viewer controller declaration appears only once in compiled source; old project fullscreen DOM node removed.
-- [x] Site `main` left untouched; no public site deployment triggered by this candidate.
+## Required local desktop manual acceptance
 
-## Manual desktop/phone acceptance (not yet performed)
+- [ ] Confirm desktop site opens without console errors, broken image assets or horizontal overflow.
+- [ ] Public Settings contains Accessibility only; hidden Developer controls accessible after the established quick-tap unlock.
+- [ ] Calm Mode hides the aquarium/reduces motion and keeps system reduced-motion behavior; older DM1 settings import safely.
+- [ ] Larger Text, High Contrast and the reading lens can be toggled; screen reader and keyboard use still work.
+- [ ] Portrait X, Y and Zoom work and per-slider Reset restores only that control.
+- [ ] Undo/Redo across multiple drag operations and Last Saved checkpoint restore the expected previous values.
+- [ ] Media Manager can reorder, disable/enable, remove/restore, caption, import an image (preview only), Undo and export; current project gallery updates when reopened.
+- [ ] ASCuarium coverflow image and project modal show the supplied aquarium picture rather than a generated text logo.
+- [ ] Steam/Discord use SVG icons and are correctly **not clickable** until URLs are configured.
+- [ ] Export publish draft → publisher embeds saved settings; Git commit contains no secret; GitHub Pages deploys develop once configured.
 
-- [ ] Open the same `index.html` in desktop Chrome and on physical Samsung Chrome/Samsung Internet.
-- [ ] Confirm the site settings gear, Archive gear, and Project settings gear look like the same SVG; one-second click burst and hover stay centered.
-- [ ] Confirm themed scrollbars in the page, site settings, project settings and Archive settings (mobile browsers may hide them when idle).
-- [ ] DLS screenshots fill preview, do not distort and open the complete originals in the shared viewer.
-- [ ] WSLX first gallery page says **Interactive simulation**, converts `C:\Users\Dor\Projects` to `/mnt/c/Users/Dor/Projects`, converts back, and copying works in the hosted browser.
-- [ ] PokeDor pixel art remains sharp; button click opens fullscreen using the same controls as Archive.
-- [ ] Viewer swipes and taps work correctly on the device; arrows, Escape, outside click, Actual size / Fit screen work.
-- [ ] Preview Scale 50%–400% and focus X/Y still work; saved presets persist after reload.
-- [ ] Visual Archive coverflow/honeycomb inertia, photos, navigation and settings still work.
-- [ ] Album inertia values 5 and 95 are noticeably different on desktop and phone.
-- [ ] DVD remains sharp; frame/color/title matches original logo **after** bridge deployment; measure motion smoothness with remote device tools.
-- [ ] Confirm original ASCuarium favicon asset visually matches the desired brand image; replace once correct original asset is provided.
-- [ ] Import and verify remaining WSLX screenshots when available.
-- [ ] Approve or reject this candidate before PR to `main`.
+## Device QA and regression
 
-## Release checklist
+- [ ] Samsung Internet and Samsung Chrome, portrait + landscape: touch and scroll, settings, image view, page overflow, hit targets.
+- [ ] DLS image crop/viewer, WSLX interactive demo, DVD original embed, Visual Archive fullscreen viewer and page navigation remain intact.
+- [ ] Reduced motion, keyboard focus, Escape handling, last-page restoration and settings panel close behavior.
+- [ ] Confirm the public Pages URL shows intended R1.6 and reports the correct deployed commit.
 
-- [ ] Verify the GitHub Pages setting in Repo Settings → Pages: source branch is `main` (or a specific Actions workflow restricted to `main`).
-- [ ] Review `develop` → `main` PR and all changed files.
-- [ ] Merge only after owner acceptance.
-- [ ] Verify public URL shows the approved commit; run smoke tests on the hosted page.
-
-## Expanded automated smoke — final candidate
-
-`qa_accept.py` (headless desktop Chromium): **19/19 passing** across 1440, 768 and 390 pixel widths. Covered actual DLS preview `cover`, click to open shared viewer, next via keyboard, Escape close, editor gear/click-away/max scale, same SVG in all three locations, WSLX conversion in both directions and existence of example buttons, no JS errors or body overflow.
-
-Note: some UI elements are intentionally cloned into animation ghost layers; tests must target the active story window's `#storyImageView`, not duplicate decorative snapshots.
+## R1.6 WP2 additions
+- [x] All seven nonempty inline JS blocks and the external config have valid JavaScript syntax.
+- [x] Chromium render at 1440 and 390 widths: zero uncaught errors and no horizontal overflow.
+- [x] ASCuarium original artwork retained; album-specific ASCII glyph and cover label hidden.
+- [x] Four sourced icons rendered as SVG; Email/GitHub remain links, Discord/Steam remain disabled until provided URLs.
+- [x] Developer Sound & FX change/preview callbacks update state without JS errors.
+- [ ] Actual manual listening and adaptive carousel tick behavior on desktop and phone.
+- [ ] Verify confetti timing/visual appearance on Chrome and Samsung Internet; record baseline/optimized FPS and long-frame counts.
+- [ ] On hosted GitHub Pages, test phone Copy GitHub config -> GitHub editor commit -> fresh-session public reload.
+- [ ] Approve the isolated photo-engine performance changes before broad animation optimization.

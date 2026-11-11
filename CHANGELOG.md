@@ -1,50 +1,30 @@
-# Changelog
+# MyPortfolio — Changelog
 
-## Round 1.5 — develop candidate (2026-11-09)
+## R1.6 WP2 — cover polish, adaptive confetti, developer Sound & FX and mobile config (2026-11-10)
+- Removed redundant page-status/footer sentence.
+- Replaced four hand-made contact SVGs with authentic sourced icons (see `docs/CONTACT_ICON_SOURCES.md`), maintaining disabled Steam and Discord until URLs arrive.
+- Removed ASCII fish pseudo-element and category strip from the ASCuarium *album cover* only; official owner image retained.
+- Reduced confetti overdraw and canvas resolution with adaptive density and visibility pause. Avoided blurred reflection compositing during cover motion while keeping original physics.
+- Added opt-in Sound & FX settings tied to actual card-selection transitions: volume, motion response, soft/mechanical/digital and session custom sound.
+- Added phone editor handoff via `published-config.js` and copy-to-clipboard, secured by GitHub-authenticated commits.
+- Tests: seven nonempty inline scripts and external configuration passed `node --check`; headless Chromium direct HTML render showed 0 JS errors and no horizontal overflow at desktop and mobile widths; full public Pages and physical-device QA still pending.
+- GitHub: **WP2 source is packaged locally, not automatically pushed or deployed.**
 
-**Status**: Prepared for owner review; not merged into `main` and not approved for public release.
+# MyPortfolio changelog
 
-### Shared gallery engine
-- Removed the independent project fullscreen viewer markup/controller and now instantiate the **existing `initViewer` implementation** from Visual Archive for project galleries too.
-- Project story passes a screenshot catalog to `openCollection` with proper caption, count and full-size originals.
-- Unified close button, carousel arrows, pointer/keyboard navigation, sizing control (**Actual size** / **Fit screen**) and focus return.
-- Added a native-size toggle to the existing Visual Archive viewer as well, so both gallery contexts get the feature.
-- Aligned controls and responsive overlays without changing the existing Archive honeycomb/camera code.
+## R1.6 — Work Package 1 (local preview; 2026-11-10)
 
-### Project cards and settings
-- Preview images use aspect-ratio preserving `object-fit:cover` with per-project editable focus X/Y and 50–400% scale; the large viewer preserves the original image.
-- Standardized **Tap to enlarge** on every clickable project screenshot.
-- Replaced full-width **Project settings** button with the SVG gear from the Archive, keeping it on the right. Site settings gear now uses that same path too.
-- Added the same hover and click-burst motion for the project gear, respecting reduced motion.
-- Added shared scrollbar tokens for the page and both Shadow DOM components.
+- **Added**: correct owner-supplied ASCuarium icon in the coverflow and project story logo; original ICO included as an asset.
+- **Added**: Steam and Discord contact SVG placeholders; disabled until real profile URLs are known.
+- **Changed**: public Settings exposes Accessibility only. Remember-where-I-left-off and Easter Egg controls now live in Developer Mode. Reduced Motion / Simple Mode appear as one Calm Mode checkbox with legacy settings migration.
+- **Added**: first reading magnifier for desktop pointer users, with local preference persistence.
+- **Added**: portrait X/Y/Zoom, individual slider resets, reversible settings history and last-saved checkpoint.
+- **Added**: developer Projects Media Manager MVP (metadata, reorder, disable, reversible remove, session import, export, undo).
+- **Added**: publish-draft export and a local Git-to-develop Windows launcher; repository authentication is handled by Git Credential Manager, not website code.
+- **Preserved**: R1.5 shared viewer, coverflow dynamics, Visual Archive mechanics and existing hosted demos.
+- **Not implemented**: native photo physics tuning, carousel sound/FX, full cursor designer, full content/section editor, real Steam/Discord profile links, complete accessible magnification.
+- **Verification**: 6 inline JavaScript blocks passed `node --check`; real browser and mobile acceptance not completed.
 
-### WSLX
-- Renamed the first gallery item to **Interactive simulation**.
-- Retained browser-only Windows ↔ WSL conversion and added example buttons plus a result-copy control.
-- Real WSL process execution is intentionally not offered by the browser preview.
+## Source baseline
 
-### DVD
-- Kept the colorful border behavior and title sync logic. Its source of truth remains the original DVD app color message/observable CSS variable.
-- Left the original bounce physics untouched.
-- Live cross-origin sync and real phone FPS require approval of the existing bridge PR and device QA; not represented as complete.
-
-### Files and release management
-- `old-version` retains the historic site; `develop` is the review branch; `main` stays on the old site until approved.
-- Added README, ARCHITECTURE, TECHNICAL_DEBT and TEST_CHECKLIST to support a reproducible release review.
-
-### Automated checks
-- All four inline JavaScript blocks pass `node --check`.
-- Chromium 1440×900 and 390×844: two viewer instances present, no JS errors, gallery opens, navigates, toggles size, closes; no body horizontal overflow.
-- Real Archive item opened and advanced without errors; a real DLS story screenshot opened using the shared viewer with correct caption and a full viewport overlay.
-
-### Pending
-- Real Samsung Internet and Chrome device acceptance.
-- WSLX additional owner-provided screenshots.
-- Exact owner-created ASCuarium icon validation (current code references the `ASCuarium/images/favicon.ico` in the repo, but screenshot feedback indicates mismatch).
-- Deployed DVD bridge color sync and frame-rate behavior.
-- Long-term extraction of large media/data-URI payloads and CSS modules.
-
-### Final QA correction (same candidate)
-- Fixed a higher-priority DLS/project-skin CSS rule that initially overrode `object-fit:cover` in the shared preview.
-- Removed a stale `closeFullShot()` call left behind by the deleted per-project fullscreen controller. The first WSLX close regression test exposed it.
-- Re-ran desktop, tablet, and phone-width browser checks: **19/19 passing** (see `QA_REPORT.md`).
+Uploaded `MyPortfolio-R1.5(1).html`: SHA-256 `197ddbde9f67a4636436b937cc97baf09dd330b22860b6a5fb6d95c0a0194f22`. No past repo branches or releases were overwritten in this deliverable.

@@ -1,94 +1,38 @@
-# Architecture — MyPortfolio Round 1.5
+# MyPortfolio architecture — Work Package 1
 
-## Goals
+## Existing design
 
-Keep a personal, expressive site readable and lightweight: **one responsibility per component**, one implementation per repeated behavior, no unnecessary framework, and clear separation of project data, rendering, state, and integrations.
+The site is one standalone HTML entry with internal styles, inline JavaScript and custom Shadow DOM components for Things I've Built and Visual Archive. R1.5 uses a shared gallery viewer. The coverflow engine and project story controller are not duplicated by WP1.
 
-## Current composition
+## New settings contract
 
-```text
-Browser document (index.html)
-├── Header / Hero / Navigation / Footer
-├── Accessibility & Developer Settings
-│   ├── PopupManager (single click-away/Escape handler)
-│   └── shared scrollbar and icon design tokens
-├── <selected-work>  [Shadow DOM]
-│   ├── projects/catalog — project metadata and screenshot sources
-│   ├── CoverFlowEngine — card physics, pointer controls, mode
-│   ├── ProjectStory — overlay, skins, navigation, preview settings
-│   ├── initViewer — SAME gallery controller as Archive
-│   └── live demos — external iframe or browser-only WSLX converter
-├── <visual-archive> [Shadow DOM]
-│   ├── Artwork catalog
-│   ├── HoneyPlane — pan, zoom, render and restore
-│   ├── initViewer — SAME gallery controller as Selected Work
-│   └── Archive controls
-├── localStorage
-│   ├── site preferences
-│   ├── remembered section/cover-flow state
-│   └── project-specific visual presets
-└── External projects (separate repositories and origins)
-    ├── DVD Logo Bounce (iframe + optional origin-checked message bridge)
-    ├── ASCuarium (iframe)
-    └── ECG demo (iframe)
-```
+- `PortfolioSettingsController.get()` returns the current settings, `set(key,value)` updates one value, `undo()` / `redo()` move through a bounded history, `restoreLastSaved()` restores the latest checkpoint and `saveCheckpoint()` updates that checkpoint.
+- Previous local settings storage: `dor.hero.settings.v1`. New checkpoint storage: `dor.hero.last-saved.v1`. Undo state is deliberately only in memory.
+- Visitor Accessibility has a separate storage namespace for text/contrast, plus `dor.portfolio.a11y-lens.v1` for the reading lens. Calm Mode migrates previously saved `simpleMode` and `reducedMotion` to one visible control.
+- Portrait variables: `--portrait-x`, `--portrait-y`, `--portrait-zoom`. X/Y are percentages; Zoom is 100–250%.
+- All slider reset buttons set the given field to its configured base default, preserving other settings. Checkpoint operations are distinct from Reset Default.
 
-## Shared image viewer contract
+## Media edit model
 
-**Source of truth**: `initViewer(document, initialWorks, readableType)` in the embedded Archive viewer implementation. It is called once per mounted Shadow DOM, not copied or rewritten for individual projects. The visual markup is cloned from the Visual Archive `<template>` into the project component; the subset of viewer styles is shared by the two instances.
+- `window.WORK_PROJECTS` remains the catalog. Entries have stable original media IDs (`original-N`) and optional `__disabled`, `__removed`, and session-only `__session` flags.
+- Viewer filters disabled/removed media and updates when the manager emits `portfolio:media-changed`. It keeps using the same R1.5 shared fullscreen controller.
+- Original-photo metadata is serialized into `dor.portfolio.media-metadata.v1`; new file uploads remain session-only unless included in exported publish draft. Large image data should move to IndexedDB or asset files in Phase 2.
+- `PortfolioMediaManager.export()` produces a versioned manifest with captions, state, order and imported media bytes. Exported data must be validated before publishing.
 
-```js
-const viewer = initViewer(scopedDocument(shadowRoot), [], type => type);
-viewer.openCollection([
-  { original: 'images/example.webp', title: 'Dashboard', type: 'Project' }
-], 0, imageElement);
-```
+## Publishing design
 
-The controller provides `open`, `openCollection`, `close`, and `isOpen`. Both instances share *one implementation*; they do not share the same DOM instance, so each gallery remains isolated in its Shadow DOM. A separate project fullscreen swipe controller was removed.
+- HTML contains a safe inline marker `__PUBLISHED_CONFIG_START__/END` and reads `window.PORTFOLIO_PUBLISHED_CONFIG`, which has a `settings` object and a versioned media manifest. Browser-edited drafts are not silently published.
+- Export Draft downloads version-1 JSON. `tools/Publish-To-Develop.ps1` performs the explicit authorized action: validates the draft, encodes it as Base64 JSON (avoids injection into the HTML source), copies approved assets, commits and pushes **only** to `develop` using the user's Git credentials.
+- The local publisher does **not** change GitHub Pages settings, and Pages must be configured separately in GitHub's admin UI.
+- Client JavaScript never stores or requests a GitHub access token. Hidden Developer Mode is an interface affordance, not authentication.
 
-When opened, the viewer owns arrow navigation, pointer inertial scrolling/snap, keyboard arrows/Escape, source-image preloading, focus restoration, an optional original-image link, and a size toggle.
+## Future refactor targets
 
-## Viewer state and data flow
+External JS modules and immutable media catalogs, more robust asset storage, per-project asset IDs that survive migrations, an accessible common settings control component, WCAG-tested magnifier, optional authenticated publishing app, modular photo engine, structured presets and CI.
 
-1. Project catalog provides screenshots and captions; the story card previews the selected screenshot.
-2. The card preview uses `cover`, but never distorts the source image.
-3. Clicking/pressing Enter on the preview builds a `{original,title,type}` catalog and calls `PortfolioProjectViewer.openCollection(...)`.
-4. The controller renders nearby slides and provides the same navigation behavior used by the Visual Archive.
-5. Closing returns focus to the previously focused element.
-
-The project story design uses a skin for each project (DLS, WSLX terminal, PokeDor Game Boy, DVD, etc.) but should not contain duplicate navigation engines.
-
-## Settings and persistence
-
-- **Visitor preferences**: larger text, contrast, simplified mode, reduced motion and recall of where the visitor left off.
-- **Project rendering preferences**: preview scale (50–400%), focus X/Y, and where relevant DVD demo size/speed/color-sync flags.
-- They live under distinct localStorage keys and must remain independently editable.
-- Saving a preset in localStorage only updates that browser. Publishing a preset for everybody requires changing the checked-in default configuration and deploying.
-
-## Iframes / security boundary
-
-Remote apps run in a separate browsing context. In a cross-origin iframe, the parent **cannot read** an app's DOM or CSS. DVD colors therefore require an explicit event bridge:
-
-```js
-// App (child) posts a state event to the trusted portfolio origin.
-window.parent.postMessage({ type: 'dm:DVD:STATE', color: '#38bdf8' }, 'https://dormandel.github.io');
-// Portfolio checks event.origin AND event.source before applying color.
-```
-
-The parent already implements an origin/source-checked listener and retains a same-origin observer fallback. A draft bridge exists in `DVD-Logo-Bounce-HTML` but is not deployed, so live cross-origin color sync is **not certified**. No changes to the DVD collision or animation physics are needed for this bridge.
-
-## Performance
-
-- Cover-flow uses `requestAnimationFrame`, delta time, transform/opacity rendering and damping instead of expensive layout updates every frame.
-- Modal animations use native Web Animations API when available, with reduced-motion fallback.
-- Image sources are currently embedded as data URIs, increasing HTML size and parsing cost. External optimized media and separate modules are a *planned* improvement, not a prerequisite for a working Round 1.5.
-- Hidden live iframes are removed instead of continuing to run in the background.
-
-## Coding conventions and guardrails
-
-- Prefer `const` and small pure functions with explicit inputs/outputs.
-- Avoid creating another component if one existing controller can accept a new data collection.
-- Keep authentic project assets; never fabricate missing screenshots.
-- Respect responsive display, keyboard use, touch input and reduced motion.
-- Document public methods with one real usage example.
-- Tests must distinguish automated desktop emulation from real Samsung Internet hardware.
+## R1.6 WP2 additions (2026-11-10)
+- **Card polish:** selected-work Shadow DOM styles isolate ASCuarium's cover decoration from other projects. The real ASCuarium icon remains embedded as a lossless image.
+- **Confetti:** canvas is sized only as needed, uses adaptive DPR and particle budget, caps paint updates to 60 FPS on high-refresh displays, and pauses offscreen. State is not tied to the coverflow physics engine.
+- **Coverflow reflections:** `is-animating`/`dragging` classes are toggled on the viewport; expensive blurred reflections are disabled while moving, restored at idle. No physics coefficients changed.
+- **Carousel audio:** `window.PortfolioCarouselAudio.tick(velocity, projectId)` is a narrow optional hook called only when selected card changes. It is muted until user interaction and uses short WebAudio voices with a 72 ms creation guard. Its controls are under Developer Settings.
+- **Published config:** inline `window.PORTFOLIO_PUBLISHED_CONFIG` remains an offline fallback; a synchronous `published-config.js` script may override it before core initialization. The owner can edit this small file using GitHub on a phone; repository authentication, not Developer Mode, protects the commit. Draft exports include sound settings.
