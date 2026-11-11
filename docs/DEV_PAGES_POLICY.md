@@ -22,3 +22,7 @@ The newest independently uploaded `MyPortfolio-R1.5(1).html` **is not byte-ident
 6. Optionally switch Pages back to `main` after the development/review period.
 
 **Warning:** While Pages points to `develop`, its content is public. No unpublished secrets or unreviewed broken states should be merged there.
+
+## Updated evidence: 2026-11-11
+
+A GitHub Pages build/deployment workflow completed successfully for WP2 HTML commit `94cf380` on branch `develop`: https://github.com/DorManDel/Dor-s-Profile-Site/actions/runs/43109657133 . The site code is in the branch; independent public URL/manual Samsung visual checks remain pending.

@@ -1,6 +1,8 @@
-# MyPortfolio — R1.6 Work Package 2 (local preview)
+# MyPortfolio — R1.6 Work Package 2 (develop)
 
 **Base**: the owner-uploaded `MyPortfolio-R1.5(1).html` (SHA-256 `197ddbde9f67a4636436b937cc97baf09dd330b22860b6a5fb6d95c0a0194f22`), NOT the separate carousel sound demo. The original was not overwritten.
+
+**GitHub status (2026-11-11):** The owner-reviewed WP2 source is committed on `develop` (`94cf380`); the exact original ASCuarium icon, portable static checks and CI are committed in `1053fe1`. Pages reported a successful deploy for source commit `94cf380`. Real mobile acceptance and direct hosted-site smoke tests are still pending.
 
 ## Opening and testing
 
