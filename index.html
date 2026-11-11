@@ -3238,7 +3238,7 @@ customElements.define('visual-archive',class VisualArchiveHost extends FeatureHo
  const mobile=byId('copy-mobile-config');
  if(mobile){
    mobile.addEventListener('click',async()=>{
-     const state={version:1,settings:window.PortfolioSettingsController?.get()||{},media:window.PortfolioMediaManager?.export?.()||{},audio:{carousel:window.PortfolioCarouselAudio?.get()||{}}};
+     const state={version:1,settings:window.PortfolioSettingsController?.get()||{},media:window.PortfolioMediaManager?.export?.()||{},audio:{carousel:window.PortfolioCarouselAudio?.get()||{}},fx:{wp3:window.PortfolioWP3?.get()||{}}};
      const code='/* Published website settings; no secrets. */\nwindow.PORTFOLIO_PUBLISHED_CONFIG='+JSON.stringify(state,null,2)+';\n';
      const msg=byId('mobile-publish-status');
      if(code.length>90000){msg.textContent='This draft contains large images. Use the desktop publisher or upload media separately.';return;}
