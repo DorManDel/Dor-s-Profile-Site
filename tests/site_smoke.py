@@ -20,6 +20,9 @@ checks = {
     "authentic aquarium artwork": "ASCuarium — official fish-and-coral icon supplied by site owner" in s and logo.is_file() and logo.stat().st_size > 10000,
     "contact SVG icons": all(f'id="contact-{x}"' in s for x in ("discord", "steam")) and s.count('class="contact-glyph"') == 4,
     "carousel audio controls": all(f'id="{x}"' in s for x in ("carousel-audio-enable", "carousel-audio-volume", "carousel-audio-preview", "carousel-audio-file")),
+    "position-driven Ratchet V3": (root / "js/carousel-ratchet-v3.js").is_file() and
+        'js/carousel-ratchet-v3.js?v=1' in s and
+        'window.PortfolioCarouselAudio?.update({position:state.position,velocity:state.velocity})' in s,
     "phone-editable config": config.is_file() and '<script src="published-config.js"></script>' in s,
     "real social destinations": 'https://steamcommunity.com/id/Bh0pexe/' in s and 'https://discord.com/users/711943737949028432' in s,
     "Developer Search": all(f'id="{x}"' in s for x in ("wp3-search","wp3-ripple-settings","wp3-prism-settings","wp3-haptics-settings","wp3-diagnostics")),
@@ -40,18 +43,18 @@ checks = {
 for name, passed in checks.items():
     print(("PASS" if passed else "FAIL") + ": " + name)
 sources = [x for x in re.findall(r"<script\b[^>]*>(.*?)</script>", s, re.S | re.I) if x.strip()]
-if len(sources) != 7:
-    sys.exit(f"FAIL: expected 7 inline scripts, found {len(sources)}")
+if len(sources) != 6:
+    sys.exit(f"FAIL: expected 6 inline scripts, found {len(sources)}")
 for n, src in enumerate(sources, 1):
     result = subprocess.run(["node", "--check", "-"], input=src, text=True, capture_output=True)
     if result.returncode:
         sys.exit(f"FAIL: script {n}: {result.stderr}")
-print("PASS: all 7 embedded JavaScript blocks parse")
+print("PASS: all 6 embedded JavaScript blocks parse")
 result = subprocess.run(["node", "--check", str(config)], capture_output=True, text=True)
 if result.returncode:
     sys.exit(f"FAIL: published config syntax: {result.stderr}")
 print("PASS: published-config.js parses")
-for name in ("js/water-ripple-v2.js", "js/wp3-enhancements.js"):
+for name in ("js/water-ripple-v2.js", "js/wp3-enhancements.js", "js/carousel-ratchet-v3.js"):
     f = root / name
     result = subprocess.run(["node", "--check", str(f)], capture_output=True, text=True)
     if result.returncode:
