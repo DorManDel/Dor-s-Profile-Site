@@ -1,3 +1,8 @@
+## R1.6 WP3 artwork correction — WSLX (2026-11-12)
+- Fixed Things I've Built carousel to use the exact owner-provided WSLX SVG rather than a separately generated cover logo. The WORK_PROJECTS logo was already byte-exact; now both views share it.
+- Vendored unchanged `images/wslx-logo.svg` from the pinned WSLX commit; added source-policy notes and smoke test against accidental substitution.
+- No effect on `main`, `old-version`, other project images, or carousel behavior.
+
 ## R1.6 WP3 — search, optional visuals, mobile accessibility and real social links (2026-11-12)
 - Resorted developer controls into coherent sections, added text search across setting names and descriptions, without hiding public Accessibility.
 - Added user-provided WaterRipple V2 (optional, initially OFF) above HTML fish and behind the hero card. Calm Mode/reduced motion turns it off. Optional throttled ripple haptic and synthesized water plop are OFF.

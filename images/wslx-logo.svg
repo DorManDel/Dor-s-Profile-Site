@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">WSLX logo</title>
+  <desc id="desc">A terminal icon combining Windows and a penguin to represent Windows and WSL interoperability.</desc>
+
+  <defs>
+    <linearGradient id="frameGradient" x1="60" y1="40" x2="460" y2="470" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6d28d9"/>
+      <stop offset="0.5" stop-color="#a21caf"/>
+      <stop offset="1" stop-color="#f000ff"/>
+    </linearGradient>
+    <linearGradient id="dividerGradient" x1="190" y1="470" x2="340" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#ec0cff"/>
+    </linearGradient>
+    <linearGradient id="winBlueA" x1="80" y1="130" x2="225" y2="390" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#38bdf8"/>
+      <stop offset="1" stop-color="#1478ff"/>
+    </linearGradient>
+    <linearGradient id="winBlueB" x1="190" y1="120" x2="305" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#67e8f9"/>
+      <stop offset="1" stop-color="#21b8ef"/>
+    </linearGradient>
+    <linearGradient id="beakGradient" x1="330" y1="290" x2="425" y2="350" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff9a24"/>
+      <stop offset="1" stop-color="#ff5b15"/>
+    </linearGradient>
+    <clipPath id="innerClip">
+      <rect x="32" y="32" width="448" height="448" rx="88"/>
+    </clipPath>
+  </defs>
+
+  <rect x="18" y="18" width="476" height="476" rx="106"
+        fill="#0b1024" stroke="url(#frameGradient)" stroke-width="18"/>
+
+  <g clip-path="url(#innerClip)">
+    <rect x="32" y="32" width="448" height="448" fill="#0b1024"/>
+    <path d="M255 32H480V480H355C413 429 447 359 447 279C447 178 379 92 255 62Z"
+          fill="#11172f" opacity="0.6"/>
+
+    <!-- CLI cue -->
+    <path d="M76 77L102 98L76 119"
+          fill="none" stroke="#fff" stroke-width="11"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M111 119H139"
+          fill="none" stroke="#fff" stroke-width="10"
+          stroke-linecap="round"/>
+
+    <!-- window controls -->
+    <circle cx="372" cy="84" r="13" fill="#45d86b"/>
+    <circle cx="410" cy="84" r="13" fill="#ffc52a"/>
+    <circle cx="448" cy="84" r="13" fill="#ff4451"/>
+
+    <!-- Windows side -->
+    <path d="M70 132L172 121L163 251L70 254Z" fill="url(#winBlueA)"/>
+    <path d="M184 120L309 100L257 242L176 248Z" fill="url(#winBlueB)"/>
+    <path d="M70 268L162 266L152 396L70 378Z" fill="url(#winBlueA)"/>
+    <path d="M175 264L251 259L208 406L164 396Z" fill="url(#winBlueB)"/>
+
+    <!-- diagonal interop bridge -->
+    <path d="M326 32L349 32L183 480H158Z" fill="url(#dividerGradient)"/>
+
+    <!-- penguin -->
+    <ellipse cx="379" cy="310" rx="118" ry="126" fill="#060914"/>
+
+    <circle cx="327" cy="286" r="31" fill="#fff"/>
+    <circle cx="429" cy="286" r="31" fill="#fff"/>
+    <circle cx="329" cy="288" r="18" fill="#090d18"/>
+    <circle cx="431" cy="288" r="18" fill="#090d18"/>
+    <circle cx="335" cy="280" r="5" fill="#fff"/>
+    <circle cx="437" cy="280" r="5" fill="#fff"/>
+
+    <path d="M331 326C341 306 360 296 379 296C399 296 419 306 430 326
+             C419 343 401 352 380 352C358 352 341 344 331 326Z"
+          fill="url(#beakGradient)"/>
+    <path d="M332 326C348 331 364 333 380 333C397 333 413 331 429 326"
+          fill="none" stroke="#e34b16" stroke-width="4" stroke-linecap="round"/>
+
+    <path d="M286 389
+             C307 365 326 361 343 380
+             C353 391 366 397 380 397
+             C394 397 407 391 418 379
+             C436 360 456 366 473 390
+             L473 480H283
+             C275 452 277 416 286 389Z"
+          fill="#fff"/>
+
+    <rect x="32" y="32" width="448" height="448" rx="88"
+          fill="none" stroke="#fff" stroke-opacity="0.05" stroke-width="2"/>
+  </g>
+</svg>
