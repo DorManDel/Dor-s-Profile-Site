@@ -1,0 +1,29 @@
+/* R1.6 WP3 — optional FX, diagnostics, mobile accessibility. No baseline redesign. */
+.wp3-search-bar{display:grid;gap:7px;padding:10px 0 15px;border-bottom:1px solid #a4d6ee33}
+.wp3-search-bar input{width:100%;min-height:43px;padding:11px 13px;border-radius:10px;border:1px solid #a4d6ee66;background:#061f34;color:#edf6ff;font:inherit;box-sizing:border-box}
+.wp3-search-bar input:focus-visible{outline:2px solid #b7e9ff;outline-offset:2px}
+.wp3-search-bar small{color:#b8d4e5;font-size:11px}
+.wp3-category{display:none;margin:16px 0 5px;padding:0 3px 6px;border-bottom:1px solid #8cbbd24a;color:#b9e7ff;font:700 11px/1.4 system-ui;letter-spacing:.11em;text-transform:uppercase}
+body.developer-unlocked .wp3-category:not(.wp3-filtered){display:block}
+.wp3-filtered{display:none!important}
+#settings-panel .wp3-slider{display:block;padding:5px 0 9px}
+#settings-panel .wp3-slider input[type=range]{display:block;width:100%;margin-top:6px}
+#settings-panel .wp3-slider output{float:right;color:#b7ecff}
+#settings-panel .wp3-panel-status{font-size:11px;color:#b6d2df;margin:9px 0;line-height:1.5}
+#settings-panel .wp3-panel-btn{min-height:40px;padding:7px 11px;border:1px solid #acdff369;border-radius:9px;background:#123b52;color:#f0fbff;cursor:pointer}
+#settings-panel .wp3-group-text{font-size:11px;color:#b8d3df;line-height:1.5}
+#settings-panel .wp3-check{display:flex;gap:10px;align-items:center;min-height:42px}
+#settings-panel .wp3-check input{accent-color:#9ddcf4}
+#wp3-fps-hud{position:fixed;z-index:260;inset:auto auto calc(13px + env(safe-area-inset-bottom,0px)) 12px;min-width:174px;padding:9px 11px;border:1px solid #8ccfe582;border-radius:11px;background:#071d31ee;box-shadow:0 7px 22px #0007;color:#ddf6ff;font:600 12px/1.6 ui-monospace,Consolas,monospace;pointer-events:none;font-variant-numeric:tabular-nums}
+#wp3-fps-hud[hidden],#wp3-touch-lens[hidden]{display:none!important}
+#wp3-fps-hud small{display:block;font-size:10px;font-weight:400;color:#9ec3d4}
+#wp3-touch-lens{position:fixed;z-index:300;pointer-events:none;max-width:min(310px,88vw);padding:11px 14px;overflow-wrap:anywhere;border:2px solid #b7ebff;border-radius:13px;background:#061c31f5;color:#fff;font:500 19px/1.4 system-ui;box-shadow:0 11px 29px #000a}
+@media(pointer:coarse){.portfolio-magnifier{display:none!important}}
+.intro-stage.wp3-ripple-host{position:relative;isolation:isolate}
+.intro-stage.wp3-ripple-host>.water-ripple-canvas{z-index:1!important;pointer-events:none!important}
+.intro-stage.wp3-ripple-host>.hero,.intro-stage.wp3-ripple-host>.next-cue{position:relative;z-index:2}
+figure.portrait.wp3-prism-on{position:relative;isolation:isolate;transform-style:preserve-3d}
+figure.portrait.wp3-prism-on::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;background:repeating-linear-gradient(112deg,rgba(255,93,213,.35) 0,rgba(103,215,255,.23) 12px,rgba(255,251,158,.28) 24px,rgba(255,93,213,.35) 36px);background-size:var(--wp3-prism-size, 150%) 100%;background-position:calc(50% + var(--wp3-prism-x,0px)) calc(50% + var(--wp3-prism-y,0px));opacity:var(--wp3-prism-opacity,.45);mix-blend-mode:soft-light;transform:perspective(650px) rotateX(var(--wp3-prism-rotate-x,0deg)) rotateY(var(--wp3-prism-rotate-y,0deg)) translateZ(2px);transition:transform .13s linear,background-position .13s linear}
+figure.portrait.wp3-prism-on{box-shadow:0 0 26px rgba(160,206,255,var(--wp3-prism-glow,.2))}
+body.calm-mode figure.portrait.wp3-prism-on::after{display:none}
+@media(prefers-reduced-motion:reduce){figure.portrait.wp3-prism-on::after{display:none!important}}
