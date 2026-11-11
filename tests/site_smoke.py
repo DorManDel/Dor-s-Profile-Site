@@ -10,7 +10,7 @@ s = (root / "index.html").read_text(encoding="utf-8")
 config = root / "published-config.js"
 logo = root / "images" / "ASCuarium.ico"
 wslx_svg = root / "images" / "wslx-logo.svg"
-wslx_embed = re.search(r"\\{id:'wslx'[^\\n]*?logo:'data:image/svg\\+xml;base64,([^']+)'", s)
+wslx_embed = re.search(r"\{id:'wslx'[^\n]*?logo:'data:image/svg\+xml;base64,([^']+)'", s)
 wslx_is_official = bool(wslx_svg.is_file() and wslx_embed and base64.b64decode(wslx_embed.group(1)) == wslx_svg.read_bytes())
 checks = {
     "Accessibility-only public settings": len(re.findall(r'<details\b[^>]*class="settings-group"', s)) == 1,
@@ -32,7 +32,7 @@ checks = {
         'value="spin09"' in s and 'carousel-audio-clicks' in s,
     "owner-supplied WSLX artwork": wslx_is_official and
         "src:window.WORK_PROJECTS?.find(p=>p.id==='wslx')?.logo||'images/wslx-logo.svg'" in s and
-        not re.search(r"\\{id:'wslx'[^\\n]*src:'data:image/svg\\+xml;base64,", s),
+        not re.search(r"\{id:'wslx'[^\n]*src:'data:image/svg\+xml;base64,", s),
     "removed redundant footer": "Dor Mandel · Software engineering, games, tools and design" not in s,
     "clean ASCuarium cover": "record-label{display:none}" in s,
     "adaptive confetti": "lowPower?46:94" in s and "slowFrames>9" in s,
