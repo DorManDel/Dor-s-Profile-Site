@@ -1,4 +1,4 @@
-"""Static smoke check for MyPortfolio R1.6 WP2. No browser/device claims."""
+"""Static smoke check for MyPortfolio R1.6 WP3. No browser/device claims."""
 from pathlib import Path
 import re
 import subprocess
@@ -17,6 +17,15 @@ checks = {
     "contact SVG icons": all(f'id="contact-{x}"' in s for x in ("discord", "steam")) and s.count('class="contact-glyph"') == 4,
     "carousel audio controls": all(f'id="{x}"' in s for x in ("carousel-audio-enable", "carousel-audio-volume", "carousel-audio-preview", "carousel-audio-file")),
     "phone-editable config": config.is_file() and '<script src="published-config.js"></script>' in s,
+    "real social destinations": 'https://steamcommunity.com/id/Bh0pexe/' in s and 'https://discord.com/users/711943737949028432' in s,
+    "Developer Search": all(f'id="{x}"' in s for x in ("wp3-search","wp3-ripple-settings","wp3-prism-settings","wp3-haptics-settings","wp3-diagnostics")),
+    "disabled by default Ripple and Prism": all(f'id="{x}"' in s for x in ("wp3-ripple","wp3-prism")) and
+        'id="wp3-ripple" checked' not in s and 'id="wp3-prism" checked' not in s,
+    "FPS and mobile lens": 'wp3-fps' in s and (root / "css/wp3-fx.css").is_file(),
+    "WaterRipple V2 asset": (root / "js/water-ripple-v2.js").is_file() and 'js/water-ripple-v2.js?v=1' in s,
+    "bundled Spin-09 cue": (root / "audio/spin-09-click.mp3").is_file() and
+        (root / "audio/spin-09-click.mp3").read_bytes().startswith(b"ID3") and
+        'value="spin09"' in s and 'carousel-audio-clicks' in s,
     "removed redundant footer": "Dor Mandel · Software engineering, games, tools and design" not in s,
     "clean ASCuarium cover": "record-label{display:none}" in s,
     "adaptive confetti": "lowPower?46:94" in s and "slowFrames>9" in s,
@@ -35,6 +44,12 @@ result = subprocess.run(["node", "--check", str(config)], capture_output=True, t
 if result.returncode:
     sys.exit(f"FAIL: published config syntax: {result.stderr}")
 print("PASS: published-config.js parses")
+for name in ("js/water-ripple-v2.js", "js/wp3-enhancements.js"):
+    f = root / name
+    result = subprocess.run(["node", "--check", str(f)], capture_output=True, text=True)
+    if result.returncode:
+        sys.exit(f"FAIL: {name} syntax: {result.stderr}")
+    print("PASS: " + name + " parses")
 if not all(checks.values()):
     sys.exit("FAIL: static smoke assertions")
-print("PASS: R1.6 WP2 static smoke. Live browser and Samsung QA still required.")
+print("PASS: R1.6 WP3 static smoke. Live browser and Samsung QA still required.")
