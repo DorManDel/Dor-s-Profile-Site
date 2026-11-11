@@ -14,18 +14,17 @@
   const bounds = {hapticPulse:[4,35],prismStrength:[0,100],prismHighlights:[0,100],
     prismDepth:[0,30],prismParallax:[0,30],prismBands:[1,8],prismSensitivity:[0,100]};
   let config = {...defaults};
-  try {
-    const saved = JSON.parse(localStorage.getItem(key) || 'null');
-    if (saved && typeof saved === 'object') {
-      for (const k of Object.keys(defaults)) {
-        if (typeof defaults[k] === 'boolean' && typeof saved[k] === 'boolean') config[k] = saved[k];
-        if (typeof defaults[k] === 'number' && Number.isFinite(saved[k])) {
-          const [min,max] = bounds[k];
-          config[k] = Math.max(min,Math.min(max,saved[k]));
-        }
+  const mergeValidated=(candidate)=>{
+    if(!candidate||typeof candidate!=='object')return;
+    for(const k of Object.keys(defaults)){
+      if(typeof defaults[k]==='boolean'&&typeof candidate[k]==='boolean')config[k]=candidate[k];
+      if(typeof defaults[k]==='number'&&typeof candidate[k]==='number'&&Number.isFinite(candidate[k])){
+        const [min,max]=bounds[k];config[k]=Math.max(min,Math.min(max,candidate[k]));
       }
     }
-  } catch {}
+  };
+  mergeValidated(window.PORTFOLIO_PUBLISHED_CONFIG?.fx?.wp3); // author-published defaults
+  try { mergeValidated(JSON.parse(localStorage.getItem(key)||'null')); } catch {} // visitor override
   const save = () => { try { localStorage.setItem(key,JSON.stringify(config)); } catch {} };
   const status = (id, message) => { const el = $(id); if (el) el.textContent = message; };
   const isCalm = () => !!$('motion-toggle')?.checked || !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
